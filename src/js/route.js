@@ -9,7 +9,7 @@
                 templateUrl: './template/index.html'
             }).state('index.home', {
                 url: '/home',
-                templateUrl: ''
+                templateUrl: './template/route/home.html'
             }).state('index.home.list', {
                 url: '/list/:sort/:page',
                 templateUrl: ''
