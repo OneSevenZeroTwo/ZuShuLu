@@ -4,9 +4,9 @@
     var route = angular.module('route', []);
     route.config(function($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.when("", "/index/home/list/pop/1");
-        $stateProvider.state('home', {
+        $stateProvider.state('index', {
                 url: '/index',
-                templateUrl: '../template/index.html'
+                templateUrl: './template/index.html'
             }).state('index.home', {
                 url: '/home',
                 templateUrl: ''
