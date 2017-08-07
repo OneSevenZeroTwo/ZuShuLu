@@ -36,17 +36,13 @@
 
             .state('car', {
                 url: '/car',
-                templateUrl: '',
-            })
-
-            .state('address', {
+                templateUrl: './template/car.html',
+            }).state('address', {
                 url: '/address',
-                templateUrl: '',
-            })
-
-            .state('addaddr', {
+                templateUrl: './template/address.html',
+            }).state('addaddr', {
                 url: '/addaddr',
-                templateUrl: '',
+                templateUrl: './template/addaddr.html',
             })
 
             .state('reg', {
