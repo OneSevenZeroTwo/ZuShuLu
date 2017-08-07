@@ -191,6 +191,7 @@
                 // 移动动画
                 scope.ways = null;
                 scope.el = ele.children().eq(0).children().eq(1);
+                scope.el.css('width', 1000)
                 scope.el.on('touchstart', function(data1, eve) {
                     scope.start = data1.changedTouches['0'].pageX;
                     scope.left = scope.el[0].offsetLeft;
@@ -234,15 +235,16 @@
                 scope.ways = null;
                 for (let i = 1; i < scope.tar.length - 1; i++) {
                     scope.target = scope.tar.eq(i).children().eq(1).children();
+                    scope.target[0].style.width = 1360 + 'px'
                     scope.target.on('touchstart', function(data1, eve) {
                         scope.start = data1.changedTouches['0'].pageX;
                         scope.left = this.offsetLeft;
-                        scope.self =this;
-                        scope.self.ontouchmove=function(data2) {
+                        scope.self = this;
+                        scope.self.ontouchmove = function(data2) {
                             scope.end = data2.changedTouches['0'].pageX;
                             scope.way = scope.left + (scope.end - scope.start);
-                            if (scope.way <= document.body.offsetWidth - 1000) {
-                                scope.way = document.body.offsetWidth - 1000
+                            if (scope.way <= document.body.offsetWidth - 1360) {
+                                scope.way = document.body.offsetWidth - 1360
                             }
                             if (scope.way >= 0) {
                                 scope.way = 0
@@ -256,7 +258,49 @@
         }
     }]);
 
-    // directive.directive('')
+    directive.directive('xlist', ['$http','$state', function($http,$state) {
+        return {
+            templateUrl: 'directive/xlist.html',
+            link: function(scope, ele, attr) {
+                scope.onTop = function() {
+                    window.onscroll = function() {
+                        if (window.scrollY >= 2490) {
+                            this.isontop = true;
+                        } else {
+                            this.isontop = false;
+                        }
+                    }
+                };
+                scope.isshownav = 0;
+                scope.onTop();
+                scope.shownav = function(num, sort) {
+                    scope.isshownav = num;
+                    $http({
+                        method: 'get',
+                        url: './data/goodlist.json',
+                    }).then(function(data) {
+                        scope.all = data.data.RECORDS;
+                        scope.arr = []
+                        for (var i = 0; i < scope.all.length; i++) {
+                            if (scope.all[i].sort == $state.params.sort) {
+                                scope.arr.push(scope.all[i])
+                            }
+                        };
+                        scope.list = scope.arr.slice(0,10);
+                        console.log(scope.list)
+                    })
+                };
+                if($state.params.sort == 'pop'){
+                    scope.isshownav = 0;
+                }else if($state.params.sort == 'sell'){
+                    scope.isshownav = 1;
+                }else if($state.params.sort == 'new'){
+                    scope.isshownav = 2;
+                }
+                scope.shownav(scope.isshownav)
+            }
+        }
+    }])
 
 
 })();
