@@ -1,16 +1,17 @@
 <div ng-class="{list:!isontop,listTop:isontop}">
     <ul class="lnav clearfix">
         <li ng-click="shownav(0,'pop')">
-            <a :href="h1"><span ng-class="{active:isshownav==0}" >流行</span></a>
+            <a ng-href="{{h1}}"><span ng-class="{active:isshownav==0}" >流行</span></a>
         </li>
         <li ng-click="shownav(1,'sell')">
-            <a :href="h2"><span ng-class="{active:isshownav==1}">新款</span></a>
+            <a ng-href="{{h2}}"><span ng-class="{active:isshownav==1}">新款</span></a>
         </li>
         <li ng-click="shownav(2,'new')">
-            <a :href="h3"><span ng-class="{active:isshownav==2}">精选</span></a>
+            <a ng-href="{{h3}}"><span ng-class="{active:isshownav==2}">精选</span></a>
         </li>
     </ul>
 </div>
+
 <style>
 .list {
     background: #fff;
@@ -72,7 +73,7 @@
     display: inline-block;
     width: 16px;
     height: 16px;
-    background: url(../img/star1.png);
+    background: url(./img/star1.png);
     margin: 0 18px 0 8px;
     position: relative;
     top: 4px;
