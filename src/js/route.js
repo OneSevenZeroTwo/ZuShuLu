@@ -3,7 +3,7 @@
 (function() {
     var route = angular.module('route', []);
     route.config(function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.when("", "/index/home/list/pop/1");
+        $urlRouterProvider.when("", "/index/home/list/pop");
         $stateProvider.state('index', {
                 url: '/index',
                 templateUrl: './template/index.html'
@@ -11,17 +11,17 @@
                 url: '/home',
                 templateUrl: './template/route/home.html'
             }).state('index.home.list', {
-                url: '/list/:sort/:page',
-                templateUrl: ''
+                url: '/list/:sort',
+                templateUrl: './template/route/xclist.html'
             }).state('index.category', {
                 url: '/category',
                 templateUrl: './template/route/category.html'
             }).state('index.filist', {
                 url: '/filist',
-                templateUrl: ''
+                templateUrl: './template/filist.html'
             }).state('index.filist.pseek', {
-                url: '/pseek/:sort/:page/:title',
-                templateUrl: ''
+                url: '/pseek/:sort/:title',
+                templateUrl: './template/route/pseek.html'
             })
 
             .state('subCategory', {
