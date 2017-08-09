@@ -15,7 +15,7 @@
                 templateUrl: ''
             }).state('index.category', {
                 url: '/category',
-                templateUrl: ''
+                templateUrl: './template/route/category.html'
             }).state('index.filist', {
                 url: '/filist',
                 templateUrl: ''
@@ -26,7 +26,7 @@
 
             .state('subCategory', {
                 url: '/subCategory/:pid',
-                templateUrl: '',
+                templateUrl: './template/route/subcategory.html',
             })
 
             .state('login', {
@@ -67,12 +67,12 @@
 
             .state('listed', {
                 url: '/listed/:pcid',
-                templateUrl: '',
+                templateUrl: './template/listed.html',
             })
 
             .state('detail', {
                 url: '/detail/:iid',
-                templateUrl: '',
+                templateUrl: './template/detail.html',
             })
             
             .state('listing', {

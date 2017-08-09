@@ -340,6 +340,119 @@
             }
         }
     }])
+    
+    //分类1
+    directive.directive('xcategory', ['$http', function($http) {
+        return {
+            templateUrl: 'directive/xcategory.html',
+            link: function(scope, ele, attr) {
+                scope.getNews = function() {
+                    $http({
+                        method: 'get',
+                        url: './data/sort.json',
+                    }).then(function(data) {
+//                      console.log(data)
+                        scope.rus = data.data.value
+//                      console.log(scope.rus)
+                    })
+                };
+               scope.getNews();
+                
+            }
+        }
+    }]);
+    
+    //分类2
+    directive.directive('xsubcategory', ['$http', function($http) {
+        return {
+            templateUrl: 'directive/xsubcategory.html',
+            link: function(scope, ele, attr) {
+                scope.getChar = function() {
+                    $http({
+                        method: 'get',
+                        url: './data/sort.json',
+                    }).then(function(data) {
+//                      console.log(data)
+                        scope.news = data.data.value[0].list
+                        scope.chars = data.data.value[0].flist
+//                      console.log(scope.news)
+                    })
+                };
+               scope.getChar();
+//             scope.goToDetail = function(pid) {
+//					$window.location.href = "#!/subcategory/" + pid
+//				}    
+            }
+        }
+    }]);
+    
+    //列表
+    directive.directive('xlisted', ['$http', function($http) {
+        return {
+            templateUrl: 'directive/xlisted.html',
+            link: function(scope, ele, attr) {
+                scope.getBuy = function() {
+                    $http({
+                        method: 'get',
+                        url: './data/goodlist.json',
+                    }).then(function(data) {
+//                      console.log(data)
+                        scope.choose = data.data.RECORDS
+//                      console.log(scope.choose)
+                    })
+                };
+               scope.getBuy();
+                
+            }
+        }
+    }]);
+
+    
+    //详情
+    directive.directive('xdetail', ['$http', function($http) {
+        return {
+            templateUrl: 'directive/xdetail.html',
+            link: function(scope, ele, attr) {
+                scope.getSort = function() {
+                    $http({
+                        method: 'get',
+                        url: './data/goodlist.json',
+                    }).then(function(data) {
+                       data.data.RECORDS.forEach((item) => {
+//                     	console.log(scope.gooding.iid)
+                        if (item.iid == scope.$resolve.$stateParams.iid) {
+                            scope.gooding = item;
+//                          console.log(scope.gooding)
+                            scope.carousel = item.carousel.split(",");
+                            scope.detailImage = item.imgAll.split(",");
+//                          console.log(scope.detailImage)
+                        }
+                       })
+                    })
+                };
+               scope.getSort();
+               var swiper = new Swiper('.swiper-container', {
+                      observer: true,
+                });
+                scope.setChar = function(good){
+                	switch(good){
+                		  case 1:
+                		  document.body.scrollTop = document.querySelector('.panel_a').offsetTop;
+                		  break;
+                		  case 2:
+                		  document.body.scrollTop = document.querySelector('.panel_b').offsetTop;
+                		  break;
+                		  case 3:
+                		  document.body.scrollTop = document.querySelector('.panel_c').offsetTop;
+                		  break;
+                		  case 4:
+                		  document.body.scrollTop = document.querySelector('.panel_d').offsetTop;
+                		  break;
+                	}
+                }
+            }
+        }
+    }]);
 
 
 })();
