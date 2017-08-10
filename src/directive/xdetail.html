@@ -205,41 +205,26 @@
 						</span>
 					</a>
                 </div>
-                <div class="rate-root" v-does="cuss">暂无评价</div>
+                <!--<div class="rate-root" v-does="cuss">暂无评价</div>-->
                 <div class="rate-list">
                     <div class="rate-user">
-                        <!--<span class="user-info">-->
-                        <!--<img :src="cuss[0].image==null?'':cuss[0].image" alt="" />-->
-                        <!--<span class="name">{{cuss[0].name=='null'?'':cuss[0].name}}</span>-->
-                        <!--</span>-->
                          <span class="user-info">
-                        <img :src="men.img" alt="" />
-                        <span class="name">{{men.name}}</span>
+                        <img ng-src="{{bus.image}}" alt="" />
+                        <span class="name">{{bus.name}}</span>
                         </span>
                     </div>
                     <div class="rate-cont">
-                        <!--{{cuss[0].title==null?'':cuss[0].title}}-->
-                        {{men.title}}
+                        {{bus.title}}
                     </div>
                     <div class="rate-attr">
-                        <!--<span class="time">{{cuss[0].time==null?'':cuss[0].time}}</span>-->
-                        <!--<span class="sku">颜色:{{cuss[0].color}} 尺码:【{{cuss[0].size==null?'':cuss[0].size}}】 </span>-->
-                        <span class="time">{{men.time}}</span>
-                        <span class="sku">颜色:{{men.color}} 尺码:【{{men.size}}】 </span>
+                        <span class="time">{{bus.time}}</span>
+                        <span class="sku">颜色:{{bus.color}} 尺码:【{{bus.size}}】 </span>
                     </div>
                     <div class="rate-imgs">
-                        <a href=""></a>
-							<!--<img :src="cuss[0].img==null?'':cuss[0].img" alt="" />-->
-							<img :src="men.img" alt="" />
-                        <!--<img :src="cuss[0].image==null?'':cuss[0].image" alt="" />-->
-                        <img :src="men.image" alt="" />
-                        <!--<span class="name">{{cuss[0].name=='null'?'':cuss[0].name}}</span>-->
-                         <span class="name">{{men.name}}</span>
+                        <a href="">
+							<img ng-src="{{bus.img}}" alt="" />
+						</a>
                         <!--</span>-->
-                    </div>
-                    <div class="rate-cont">
-                        <!--{{cuss[0].title==null?'':cuss[0].title}}-->
-                         {{men.title}}
                     </div>
                 </div>
             </div>
@@ -249,7 +234,7 @@
                 <div class="mend">
                     <span>热卖推荐</span>
                 </div>
-                <div class="list">
+                <!--<div class="list">
                     <ul class="list_ch clearfix">
                         <li v-for="item in this.men">
                             <a href="#/detail">
@@ -259,7 +244,7 @@
 							</a>
                         </li>
                     </ul>
-                </div>
+                </div>-->
             </div>
         <!--底部-->
         <div class="footer">
@@ -267,7 +252,7 @@
                 <ul>
                     <li>
                         <i class="icon">
-							<img src="../img/kefu.png" alt="" />
+			      		<img src="../img/kefu.png" alt="" />
 						</i>
                         <span class="text">客服</span>
                     </li>
@@ -929,11 +914,11 @@
 }
 .rate-imgs a {
     width: 20%;
+    height: 100px;
     display: inline-block;
-    margin-bottom: 2%;
     margin-right: 2%;
 }
-.rate-imgs a img {
+.rate-imgs img {
     width: 100%;
     border: none;
 }

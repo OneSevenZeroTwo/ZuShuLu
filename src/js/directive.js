@@ -309,6 +309,7 @@
         return {
             templateUrl: 'directive/xlist.html',
             link: function(scope, ele, attr) {
+            	console.log(attr)
                 scope.isshownav = 0;
                 scope.isshowmore = false;
                 // console.log($state.params)
@@ -456,8 +457,7 @@
 //                      console.log(scope.rus)
                     })
                 };
-               scope.getNews();
-                
+               scope.getNews();       
             }
         }
     }]);
@@ -487,11 +487,13 @@
     }]);
     
     //列表
-    directive.directive('xlisted', ['$http', function($http) {
+    directive.directive('xlisted', ['$http','$state', function($http) {
         return {
             templateUrl: 'directive/xlisted.html',
-            link: function(scope, ele, attr) {
+            link: function(scope,ele,attr) {
+            	console.log(attr)
                 scope.getBuy = function() {
+                	
                     $http({
                         method: 'get',
                         url: './data/goodlist.json',
@@ -499,6 +501,26 @@
 //                      console.log(data)
                         scope.choose = data.data.RECORDS
 //                      console.log(scope.choose)
+//						scope.choose = [];
+						
+//                      if (attr.type == 'listed') {
+//                          scope.h1 = '#!/listed/doing/pop';
+//                          scope.h2 = '#!/listed/doing/sell';
+//                          scope.h3 = '#!/listed/doing/new';
+//                          for (var i = 0; i < scope.choose.length; i++) {
+//                              if (scope.choose[i].sort == $state.params.sort) {
+//                                  scope.choose.push(scope.choose[i])
+//                              }
+//                          };
+//                          window.onscroll = function() {
+//                              if (window.scrollY >= 2490) {
+//                                  scope.isontop = true;
+//                              } else {
+//                                  scope.isontop = false;
+//                              }
+//                          }
+//
+//                      } 
                     })
                 };
                scope.getBuy();
@@ -550,9 +572,41 @@
                 		  break;
                 	}
                 }
+                //评论
+                scope.getBus = function() {
+                    $http({
+                        method: 'get',
+                        url: './data/discuss.json',
+                    }).then(function(data) {
+                       data.data.RECORDS.forEach((good) => {
+                        if (good.iid == scope.$resolve.$stateParams.iid) {
+                            scope.bus = good;
+//                          console.log(scope.bus) 
+                        }
+                       })
+                    })
+                }
+                 scope.getBus();
             }
         }
     }]);
-
-
+	
+	//
+	 directive.directive('xhead', ['$http', function($http) {
+        return {
+            templateUrl: 'directive/xhead.html',
+            link: function(scope, ele, attr) {
+             scope.isShow = false;
+              scope.show = function(){
+              	scope.isShow = true;
+              	   var timer = setInterval(function() {
+                        document.body.scrollTop = document.body.scrollTop - 40;
+                        if (document.body.scrollTop == 0) {
+                            clearInterval(timer)
+                        }
+                    }, 1)
+              }   
+            }
+        }
+    }]);
 })();
