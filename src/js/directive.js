@@ -1,6 +1,6 @@
 //组件
 ;
-(function() { <<
+(function() {
 	var directive = angular.module('directive', []);
 
 	// 头部
