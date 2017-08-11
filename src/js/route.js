@@ -37,12 +37,15 @@
             .state('car', {
                 url: '/car',
                 templateUrl: './template/car.html',
+            }).state('order', {
+                url: '/order',
+                templateUrl: './template/order.html',
             }).state('address', {
                 url: '/address',
                 templateUrl: './template/address.html',
-            }).state('addaddr', {
-                url: '/addaddr',
-                templateUrl: './template/addaddr.html',
+            }).state('addaddress', {
+                url: '/addaddress',
+                templateUrl: './template/addaddress.html',
             })
 
             .state('reg', {
