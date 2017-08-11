@@ -8,12 +8,14 @@
 		return {
 			templateUrl: "directive/jheader.html",
 			link: function(scope, ele, attr) {
-				//console.log(scope.$resolve.$$state.url.sourcePath,ele);
+
 				scope.isMaskShow = false;
+				scope.baseUrl = "./data/";
 				switch(scope.$resolve.$$state.url.sourcePath) {
 					case "/car":
 						scope.right_btn = "删除";
 						scope.title = "购物车";
+						
 						scope.headerClick = function() {
 							scope.isMaskShow = true;
 							scope.AreYouSure = "确定要删除选中商品吗";
@@ -22,6 +24,9 @@
 								scope.carList.forEach((item, index) => {
 									scope.carList.splice(index, 1);
 								})
+							}
+							scope.isCancel = function() {
+								scope.isMaskShow = false;
 							}
 						}
 						break;
@@ -42,6 +47,7 @@
 					case "/addaddress":
 						scope.right_btn = "保存";
 						scope.title = "收货地址";
+						ele.children().children()[1].style.color = "#ff7a9a";
 						scope.headerClick = function() {
 							window.location.href = "#!/address";
 						}
@@ -56,7 +62,6 @@
 		return {
 			templateUrl: "directive/jcarlist.html",
 			link: function(scope, ele, attr) {
-				scope.baseUrl = "./data/";
 				scope.isPrompt = false;
 
 				scope.carList = null;
@@ -110,14 +115,13 @@
 					if(isChecked) {
 						// 如果选中，把该项加入数组
 						scope.isCheck.splice(0, 0, lid);
-
-						if(scope.isCheck.length == scope.len) {
-							scope.isChecked = true;
-						} else {
-							scope.isChecked = false;
+ 						
+ 						// 如果该项选中，返回true，该项为选中状态
+						scope.checkeds = function(id) {
+							return true;
 						}
 
-						// 如果选中项长度 == 列表长度，则勾选全选
+						// 如果选中项长度==列表长度，则勾选全选
 						if(scope.isCheck.length == scope.carList.length) {
 							scope.isallcheck = true;
 						} else {
@@ -126,7 +130,7 @@
 					} else {
 						// 如果有一个不选，则取消勾选全选
 						scope.isallcheck = false;
-						//取消选中,从数组中删除该项
+						// 取消选中,从数组中删除该项
 						scope.isCheck.forEach((item, idx) => {
 							if(lid == item) {
 								scope.isCheck.splice(idx, 1);
@@ -242,7 +246,6 @@
 			link: function(scope, ele, attr) {
 				scope.isDate = new Date();
 				scope.hasAddresss = false;
-				scope.baseUrl = "./data/";
 
 				// 提交订单
 				scope.tj = function() {
@@ -323,8 +326,7 @@
 		return {
 			templateUrl: "directive/jaddress.html",
 			link: function(scope, ele, attr) {
-				scope.baseUrl = "./data/";
-
+ 				scope.addrId = null;
 				// 进入页面判断是否登录
 				if(document.cookie.split("=")[1]) {
 					$http({
@@ -349,7 +351,7 @@
 
 				// 点击修改地址
 				scope.modthis = function(id) {
-					scope.addrId = id;
+					window.location.href = "#!/addaddress?id="+id;
 				}
 			}
 		}
@@ -360,41 +362,99 @@
 		return {
 			templateUrl: "directive/jaddaddress.html",
 			link: function(scope, ele, attr) {
-				scope.baseUrl = "./data/";
 				scope.isAddrBtnShow = false;
 
 				scope.isPidShow = true;
 				scope.isCidShow = true;
 				scope.isDidShow = true;
 
+					scope.isstatus = 0;
 				// 进入页面判断是否登录
 				if(document.cookie.split("=")[1]) {
-
 					scope.citylist = [];
-					// 获取城市列表
-					$http({
-						method: "GET",
-						url: scope.baseUrl + "city.json"
-					}).then((res) => {
-						scope.citylist = res.data.result.location;
-						// 获取省
-						scope.province = scope.citylist[0];
-					})
+ 					var promise = new Promise((resolve,reject)=>{
+						// 获取城市列表
+						$http({
+							method: "GET",
+							url: scope.baseUrl + "city.json"
+						}).then((res) => {
+							scope.citylist = res.data.result.location;
+							// 获取省
+							scope.province = scope.citylist[0];
+							resolve(scope.citylist)
+						})
+ 						
+ 					})
+ 					promise.then((resolve,reject)=>{
+
+	 					// 如果带有hash值，是要修改地址
+						scope.addrId = window.location.hash.split("?")[1]?window.location.hash.split("?")[1].split("=")[1]:false;
+						// 是否为修改
+						if(scope.addrId) {
+							// 显示删除按钮
+							scope.isAddrBtnShow = true;
+
+							// 如果地址栏有值，隐藏提示
+							if(scope.addressPid != ""){
+								scope.isPidShow = false;
+							}
+							if(scope.addressCid != ""){
+								scope.isCidShow = false;
+							}
+							if(scope.addressDid != ""){
+								scope.isDidShow = false;
+							}
+
+							// 获取当前地址信息，并写入输入框
+							$http({
+								method: "GET",
+								url: scope.baseUrl + "addresslist.json"
+							}).then((res) => {
+								scope.addressList = res.data.data;
+								scope.addressList.forEach((item) => {
+									if(item.id == scope.addrId) {
+										scope.addressUser = item.addressUser;
+										scope.addressPhone = item.addressPhone;
+										scope.addressPid = Number(item.addressPid);
+										scope.addressCid = Number(item.addressCid);
+										scope.addressDid = Number(item.addressDid);
+										scope.addressPname = item.addressPname;
+										scope.addressCname = item.addressCname;
+										scope.addressDname = item.addressDname;
+										scope.addressStreet = item.addressStreet;
+										scope.addressPostcode = item.addressPostcode;
+										scope.isDefault = item.isDefault;
+									}
+								})
+
+								scope.delAddr = function(){
+									scope.addressList.forEach((item,idx) => {
+										if(item.id == scope.addrId) {
+											scope.addressList.splice(idx,1);
+											window.location.href = "#!/address";
+										}
+									})
+								}
+							})
+
+						} else {
+							scope.isAddrBtnShow = false;
+						}
+					});
 
 					// 根据省 获取市
 					scope.$watch("addressPid", function(newVal, oldVal, scope) {
-						console.log(newVal);
 						if(newVal != 0 && newVal != "" && newVal != undefined) {
 							scope.city = scope.citylist[newVal];
 						}
 					}, true)
 					// 根据市 获取县区
 					scope.$watch("addressCid", function(newVal, oldVal, scope) {
-						console.log(newVal);
 						if(newVal != 0 && newVal != "" && newVal != undefined) {
 							scope.area = scope.citylist[newVal];
 						}
 					}, true)
+
 					// 如果输入框有值，隐藏提示信息
 					scope.selectChangeP = function() {
 						scope.isPidShow = false;
@@ -405,39 +465,7 @@
 					scope.selectChangeD = function() {
 						scope.isDidShow = false;
 					}
-
-					console.log("scope", scope.addrId);
-					// 是否为修改
-					if(scope.addrId) {
-						console.log(666)
-						scope.isAddrBtnShow = true;
-						$http({
-							method: "GET",
-							url: scope.baseUrl + "addresslist.json"
-						}).then((res) => {
-							scope.addressList = res.data.data;
-							scope.addressList.forEach((item) => {
-								if(item.id == scope.addrId) {
-									console.log(item)
-									scope.addressUser = item.addressUser;
-									scope.addressPhone = item.addressPhone;
-									scope.addressPid = scope.province[item.addressPid];
-									scope.addressCid = scope.city[item.addressCid];
-									scope.addressDid = scope.area[item.addressDid];
-									scope.addressPname = item.addressPname;
-									scope.addressCname = item.addressCname;
-									scope.addressDname = item.addressDname;
-									scope.addressStreet = item.addressStreet;
-									scope.addressPostcode = item.addressPostcode;
-									scope.isDefault = item.isDefault;
-									window.sessionStorage.setItem("addrId", "");
-								}
-							})
-						})
-
-					} else {
-						scope.isAddrBtnShow = false;
-					}
+ 					
 				} else {
 					scope.isMaskShow = true;
 					scope.AreYouSure = "非常抱歉，您还未登陆，请先登录后查看";
@@ -455,6 +483,7 @@
 				scope.isuncheck = function() {
 					scope.isDefault = !scope.isDefault;
 				}
+
 
 			}
 		}
