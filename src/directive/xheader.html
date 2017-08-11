@@ -1,9 +1,9 @@
 <header class="warpper">
     <form action="post" id="js_form clearfix">
         <a href="#" class="home_btn"></a>
-        <input type="text" placeholder="套装" class="js_input" ng-focus="showSea" ng-input="showtsea" ng-model="text" />
-        <span class="close" ng-show="!isshowtsea" ng-click="hidetsea" ng-focus="">&times;</span>
-        <a ng-href="h1" ng-class="{tsou:isshowtsea,sou:!isshowtsea}" ng-show="isshowsearch" ng-click="act">{{title}}</a>
+        <input type="text" placeholder="套装" class="js_input" ng-focus="showSea()" ng-change="showtsea()" ng-model="text" />
+        <span class="close" ng-show="!isshowtsea" ng-click="hidetsea()">&times;</span>
+        <a ng-href="{{xh1}}" ng-class="{tsou:isshowtsea,sou:!isshowtsea}" ng-show="isshowsearch" ng-click="act()">{{title}}</a>
         <a href="javascript:;" class="js_right" ng-show="!isshowsearch"></a>
     </form>
 </header>
